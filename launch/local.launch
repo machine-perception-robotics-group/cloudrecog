@@ -1,0 +1,16 @@
+<launch>
+    <arg name="video" default="/dev/video0" doc="Video device"/>
+    <arg name="gpu" default="-1" doc="DCNN Processes use GPU at >0"/>
+
+    <group ns="usb_cam">
+        <node pkg="uvc_camera" name="camera" type="uvc_camera_node" required="true">
+            <param value="$(arg video)" name="device" />
+        </node>
+    </group>
+        <group>
+        <node pkg="cloud_resnet" args="--gpu $(arg gpu)" cwd="node" name="server" type="server.py" output="screen" required="true" />
+    </group>
+        <group>
+        <node pkg="cloud_resnet" args="--gpu $(arg gpu)" cwd="node" name="client" type="client.py" output="screen" />
+    </group>
+</launch>

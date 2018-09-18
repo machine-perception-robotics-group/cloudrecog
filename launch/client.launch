@@ -1,0 +1,15 @@
+<launch>
+    <arg name="video" default="/dev/video0" doc="Video device"/>
+    <arg name="usbcam" default="true" doc="use usb_cam at true."/>
+    <arg name="gpu" default="-1" doc="DCNN Processes use GPU at >0"/>
+    <arg name="div" default="conv_ds_4" doc="Div layer"/>
+
+    <group ns="usb_cam">
+        <node pkg="uvc_camera" name="camera" type="uvc_camera_node" required="true">
+            <param value="$(arg video)" name="device" />
+        </node>
+    </group>
+    <group>
+        <node pkg="cloud_mobilenet" args="--gpu $(arg gpu) --div $(arg div)" cwd="node" name="test" type="client.py" output="screen" />
+    </group>
+</launch>

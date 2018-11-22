@@ -1,0 +1,7 @@
+<launch>
+    <arg name="gpu" default="-1"/>
+    <arg name="model" default="yolo/epoch-100.model" />
+    <group>
+        <node pkg="cloud_yolo" args="--gpu $(arg gpu) --model $(arg model)" cwd="node" name="server" type="server.py" output="screen" />
+    </group>
+</launch>

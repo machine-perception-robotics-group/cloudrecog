@@ -1,0 +1,6 @@
+*.model
+*.state
+*.png
+*.pyc
+*.*~
+*.log

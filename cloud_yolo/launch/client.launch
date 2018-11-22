@@ -1,0 +1,26 @@
+<launch>
+    <arg name="usbcam" default="true" doc="use usb_cam at true."/>
+    <arg name="gpu" default="-1" doc="DCNN Processes use GPU at >0"/>
+    <arg name="model" default="yolo/epoch-100.model" doc="DCNN modelfile"/>
+    <arg name="div" default="0" doc="DCNN div layer"/>
+    <arg name="video" default="/dev/video0" doc="video device"/>
+    <arg name="ns" default="ns" doc="namespace" />
+    <!--<group if="$(arg usbcam)" ns="usb_cam">
+        <node pkg="usb_cam" name="facialcam" type="usb_cam_node" required="true">
+        <param value="/dev/video0" name="video_device" />
+        <param value="mjpeg" name="pixel_format" />
+        <param value="640" name="image_width" />
+          <param value="480" name="image_height" />
+        </node>
+    </group> -->
+    <group ns="$(arg ns)">
+        <node pkg="uvc_camera" name="camera" type="uvc_camera_node" required="true">
+            <param value="$(arg video)" name="device" />
+        </node>
+                <rosparam param="div_layer">1</rosparam>>
+
+    <node pkg="cloud_yolo" args="--gpu $(arg gpu) --model $(arg model)" cwd="node" name="test" type="client.py" output="screen" />
+    <node pkg="cloud_yolo" args="--layers $(find cloud_yolo)/config/layers.csv" name="hoge" type="controller.py" output="screen" />
+    </group>
+
+</launch>
